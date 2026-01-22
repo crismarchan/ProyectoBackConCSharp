@@ -8,9 +8,10 @@ namespace ProyectoBackConCSharp.Controllers
     public class OperationController : ControllerBase
     {
         [HttpGet]
-        public decimal Get(int a, int b)
+        public decimal Get(int a, int b, Numbers numbers)
         {
             return a + b;
+           // return numbers.A + numbers.B;
         }
 
 
@@ -32,5 +33,11 @@ namespace ProyectoBackConCSharp.Controllers
         {
             return a / b;
         }
+    }
+
+    public class Numbers
+    {
+        public decimal A { get; set; }
+        public decimal  B { get; set; }
     }
 }
