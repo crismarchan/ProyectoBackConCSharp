@@ -15,11 +15,36 @@ namespace ProyectoBackConCSharp.Controllers
         public List<People> GetPeople () => Repository.People;
 
         [HttpGet("{id}")]
-        public People Get(int id) => Repository.People.First(p => p.ID == id);
+        public ActionResult<People> Get(int id) { 
+            var people = Repository.People.FirstOrDefault(p => p.ID == id);
+
+            if (people == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(people);
+        }
+
 
         [HttpGet("search/{search}")]
         public List<People> Get(string search) =>
             Repository.People.Where(p => p.Name.ToUpper().Contains(search.ToUpper())).ToList();
+
+
+        [HttpPost]
+        public IActionResult Add(People people) {
+        
+            if (string.IsNullOrEmpty (people.Name))
+            {
+                return BadRequest();
+            }
+            Repository.People.Add(people);
+
+            return NoContent();
+        }
+
+
     }
 
 
