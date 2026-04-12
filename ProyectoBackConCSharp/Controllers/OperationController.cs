@@ -8,17 +8,23 @@ namespace ProyectoBackConCSharp.Controllers
     public class OperationController : ControllerBase
     {
         [HttpGet]
-        public decimal Get(int a, int b, Numbers numbers)
+        //public decimal Get(int a, int b, Numbers numbers)
+        public decimal Get(int a, int b)
         {
             return a + b;
-           // return numbers.A + numbers.B;
+            //return numbers.A + numbers.B;
         }
 
 
         [HttpPost]
-        public decimal Add(int a, int b)
+        public decimal Add(Numbers numbers, [FromHeader] string Host,
+           [FromHeader (Name = "Content-Length")] string ContentLength ,
+           [FromHeader(Name = "X-Some")] string xSome)
         {
-            return a - b;
+            Console.WriteLine($"Host es {Host}" );
+            Console.WriteLine($"Content-Length es {ContentLength}");
+            Console.WriteLine($"X-Some es {xSome}");
+            return numbers.A - numbers.B;
         }
 
         [HttpPut]
