@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProyectoBackConCSharp.Services;
 using System.Linq;
 using System.Net.NetworkInformation;
 
@@ -10,6 +11,12 @@ namespace ProyectoBackConCSharp.Controllers
 
     public class PeopleController : ControllerBase
     {
+        private IPeopleService _peopleService;
+
+        public PeopleController ()
+        {
+            _peopleService = new PeopleService ();
+        }
 
         [HttpGet("all")]
         public List<People> GetPeople () => Repository.People;
@@ -35,8 +42,9 @@ namespace ProyectoBackConCSharp.Controllers
         [HttpPost]
         public IActionResult Add(People people) {
         
-            if (string.IsNullOrEmpty (people.Name))
+            if (!_peopleService.Validate(people))
             {
+
                 return BadRequest();
             }
             Repository.People.Add(people);
@@ -78,3 +86,4 @@ namespace ProyectoBackConCSharp.Controllers
     }
 
 }
+ 
