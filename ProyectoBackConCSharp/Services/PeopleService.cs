@@ -4,10 +4,10 @@ namespace ProyectoBackConCSharp.Services
 {
     public class PeopleService : IPeopleService
     {
-        public bool Validate (People people)
+        public bool Validate(People people)
         {
 
-            if (string.IsNullOrEmpty (people.Name))
+            if (string.IsNullOrEmpty(people.Name))
             {
                 return false;
 

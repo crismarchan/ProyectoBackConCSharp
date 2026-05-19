@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProyectoBackConCSharp.Services;
-using System.Linq;
-using System.Net.NetworkInformation;
 
 namespace ProyectoBackConCSharp.Controllers
 {
@@ -13,16 +10,17 @@ namespace ProyectoBackConCSharp.Controllers
     {
         private IPeopleService _peopleService;
 
-        public PeopleController ([FromKeyedServices("peopleService")] IPeopleService peopleService)
+        public PeopleController([FromKeyedServices("peopleService")] IPeopleService peopleService)
         {
             _peopleService = peopleService;
         }
 
         [HttpGet("all")]
-        public List<People> GetPeople () => Repository.People;
+        public List<People> GetPeople() => Repository.People;
 
         [HttpGet("{id}")]
-        public ActionResult<People> Get(int id) { 
+        public ActionResult<People> Get(int id)
+        {
             var people = Repository.People.FirstOrDefault(p => p.ID == id);
 
             if (people == null)
@@ -40,8 +38,9 @@ namespace ProyectoBackConCSharp.Controllers
 
 
         [HttpPost]
-        public IActionResult Add(People people) {
-        
+        public IActionResult Add(People people)
+        {
+
             if (!_peopleService.Validate(people))
             {
 
@@ -81,9 +80,8 @@ namespace ProyectoBackConCSharp.Controllers
         public int ID { get; set; }
         public string Name { get; set; }
 
-        public DateTime Birthdate {  get; set; }
+        public DateTime Birthdate { get; set; }
 
     }
 
 }
- 

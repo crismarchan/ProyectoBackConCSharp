@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace ProyectoBackConCSharp.Controllers
 {
@@ -18,10 +17,10 @@ namespace ProyectoBackConCSharp.Controllers
 
         [HttpPost]
         public decimal Add(Numbers numbers, [FromHeader] string Host,
-           [FromHeader (Name = "Content-Length")] string ContentLength ,
+           [FromHeader(Name = "Content-Length")] string ContentLength,
            [FromHeader(Name = "X-Some")] string xSome)
         {
-            Console.WriteLine($"Host es {Host}" );
+            Console.WriteLine($"Host es {Host}");
             Console.WriteLine($"Content-Length es {ContentLength}");
             Console.WriteLine($"X-Some es {xSome}");
             return numbers.A - numbers.B;
@@ -44,6 +43,6 @@ namespace ProyectoBackConCSharp.Controllers
     public class Numbers
     {
         public decimal A { get; set; }
-        public decimal  B { get; set; }
+        public decimal B { get; set; }
     }
 }
