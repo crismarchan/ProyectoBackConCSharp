@@ -10,8 +10,8 @@ namespace ProyectoBackConCSharp.Controllers
     {
 
 
-       [ HttpGet("sync")]
-       public IActionResult GetSync()
+        [HttpGet("sync")]
+        public IActionResult GetSync()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             stopwatch.Start();
@@ -25,9 +25,32 @@ namespace ProyectoBackConCSharp.Controllers
             Console.WriteLine("Todo ha terminado");
 
             stopwatch.Stop();
-            
+
 
             return Ok(stopwatch.Elapsed);
+        }
+
+
+        [HttpGet("async")]
+
+        public async Task<IActionResult> GetAsync()
+        {
+            var task1 = new Task<int> (() => 
+            {
+                Thread.Sleep(1000);
+                Console.WriteLine("Conexion  a base de datos terminada");
+                return 9;
+            });
+
+            task1.Start();
+
+            Console.WriteLine("Hago otra cosa");
+
+            var result1 = await task1;
+
+            Console.WriteLine("Todo ha terminado");
+
+            return Ok(result1);
         }
 
     }
