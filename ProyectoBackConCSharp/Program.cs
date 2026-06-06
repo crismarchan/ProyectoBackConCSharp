@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using ProyectoBackConCSharp.Models;
 using ProyectoBackConCSharp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,11 +13,18 @@ builder.Services.AddKeyedScoped<IRandomService, RandomService>("randomScoped");
 builder.Services.AddKeyedTransient<IRandomService, RandomService>("randomTransient");
 
 builder.Services.AddScoped<IPostsService, PostsService>();
+//httpClient json placeholder
 builder.Services.AddHttpClient<IPostsService, PostsService>( c =>
 {
     c.BaseAddress = new Uri(builder.Configuration["BaseUrlPosts"]);
 }
     );
+
+//EntityFramework
+builder.Services.AddDbContext<StoreContext> (options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("StoreConnection"));
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
