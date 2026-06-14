@@ -1,0 +1,82 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ProyectoBackConCSharp.DTOs;
+using ProyectoBackConCSharp.Models;
+
+namespace ProyectoBackConCSharp.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class BeerController : ControllerBase
+
+    {
+        private StoreContext _context;
+
+        public BeerController(StoreContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<BeerDto>> Get() =>
+            await _context.Beers.Select(b => new BeerDto
+
+            {
+                Id = b.BeerId,
+                Name = b.Name,
+                Alcohol = b.Alcohol,
+                BrandID = b.BrandID
+            }).ToListAsync();
+
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BeerDto>> GetById (int id)
+        {
+            var beer = await _context.Beers.FindAsync(id);
+
+            if (beer == null)
+            {
+                return NotFound();
+            }
+
+            var beerDto = new BeerDto
+            {
+                Id = beer.BeerId,
+                Name = beer.Name,
+                Alcohol = beer.Alcohol,
+                BrandID = beer.BrandID
+            };
+
+            return Ok(beerDto);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<BeerDto>> Add(BeerInsertDto beerInsertDto)
+        {
+
+            var beer = new Beer()
+            {
+                Name = beerInsertDto.Name,
+                BrandID = beerInsertDto.BrandID,
+                Alcohol = beerInsertDto.Alcohol,
+            };
+
+            await _context.Beers.AddAsync(beer);
+            await _context.SaveChangesAsync();
+
+            var beerDto = new BeerDto
+            {
+                Id = beer.BeerId,
+                Name = beer.Name,
+                Alcohol = beer.Alcohol,
+                BrandID = beer.BrandID
+        };
+
+            return CreatedAtAction(nameof(GetById), new { id = beer.BeerId }, beerDto);
+
+
+        }
+    }
+}
