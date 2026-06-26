@@ -1,6 +1,9 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using ProyectoBackConCSharp.DTOs;
 using ProyectoBackConCSharp.Models;
 using ProyectoBackConCSharp.Services;
+using ProyectoBackConCSharp.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +28,10 @@ builder.Services.AddDbContext<StoreContext> (options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("StoreConnection"));
 });
+//Validadores Validator
+builder.Services.AddScoped<IValidator<BeerInsertDto>, BeerInsertValidator>();
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProyectoBackConCSharp.DTOs;
@@ -12,10 +13,14 @@ namespace ProyectoBackConCSharp.Controllers
 
     {
         private StoreContext _context;
+        private IValidator<BeerInsertDto> _beerInsertValidator;
 
-        public BeerController(StoreContext context)
+        public BeerController(StoreContext context,
+                IValidator<BeerInsertDto> beerInsertvalidador
+            )
         {
             _context = context;
+            _beerInsertValidator = beerInsertvalidador;
         }
 
         [HttpGet]
@@ -55,6 +60,13 @@ namespace ProyectoBackConCSharp.Controllers
         [HttpPost]
         public async Task<ActionResult<BeerDto>> Add(BeerInsertDto beerInsertDto)
         {
+
+            var validationResult = await _beerInsertValidator.ValidateAsync(beerInsertDto);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
 
             var beer = new Beer()
             {
