@@ -30,6 +30,7 @@ builder.Services.AddDbContext<StoreContext> (options =>
 });
 //Validadores Validator
 builder.Services.AddScoped<IValidator<BeerInsertDto>, BeerInsertValidator>();
+builder.Services.AddScoped<IValidator<BeerUpdateDto>, BeerUpdateValidator>();
 
 
 
